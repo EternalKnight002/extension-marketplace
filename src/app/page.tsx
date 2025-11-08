@@ -4,11 +4,10 @@ import fs from "fs";
 import path from "path";
 import ExtensionCard from "../components/ExtensionCard";
 import HowToDownloadSection from "../components/HowToDownloadSection";
+import AnimatedHero from "../components/AnimatedHero";
 
 /**
  * Main homepage
- * - Displays all extensions as cards
- * - Includes "How to Download & Install" section below
  */
 
 type Ext = {
@@ -41,14 +40,8 @@ export default async function HomePage() {
     <>
       {/* ===== Extension Gallery ===== */}
       <section className="container py-12">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-extrabold">Extensions</h1>
-          <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            A curated list of my Chrome & VS Code extensions. Click{" "}
-            <span className="font-semibold">Download</span> to get the release or{" "}
-            <span className="font-semibold">View on GitHub</span> to check the source.
-          </p>
-        </header>
+        {/* Animated hero (creative headline + tagline) */}
+        <AnimatedHero />
 
         {/* Grid of cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

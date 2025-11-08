@@ -1,4 +1,4 @@
-// ExtensionCard.tsx
+// src/components/ExtensionCard.tsx
 "use client";
 
 import React from "react";

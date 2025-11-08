@@ -4,14 +4,7 @@
 import React from "react";
 import { Search } from "lucide-react";
 
-/**
- * Small client-side search input.
- * Handles its own state and (optionally) can call a callback or update URL params.
- * Right now it only controls local state to avoid passing event handlers from server components.
- *
- * If you want server-side filtering or URL updates, we can extend this component to update
- * the querystring using next/navigation's useRouter or useSearchParams.
- */
+
 
 export default function SearchInput({ placeholder = "Search extensions by name or tag..." }: { placeholder?: string }) {
   const [value, setValue] = React.useState("");

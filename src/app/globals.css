@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== Page hero helpers ===== */
+.page-hero {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.page-hero .hero-sub {
+  color: var(--muted);
+}
+
+.page-hero::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin-top: 8px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.04));
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .page-hero h1 { font-size: 1.5rem; }
+  .page-hero .hero-sub { font-size: 0.95rem; }
+  .page-hero::after { height: 28px; }
+}
+
+main > section.container:first-child {
+  margin-top: 0.25rem;
+}
+
+header {
+  box-shadow: 0 1px 0 rgba(15,23,42,0.03);
+}
+
 /* ================= Theme Colors ================= */
 :root {
   --bg: #ffffff;
@@ -67,26 +103,64 @@ html, body, #__next {
   transform: translateX(0) rotate(20deg);
 }
 
+/* ===== Hero decorative blob + polish ===== */
+.hero-blob {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: 520px;
+  height: 240px;
+  border-radius: 38%;
+  filter: blur(36px) saturate(120%);
+  background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(99,102,241,0.75) 30%, rgba(14,165,233,0.85) 70%);
+  opacity: 0.14;
+  z-index: 0;
+  mix-blend-mode: screen;
+  animation: blob-move 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.dark .hero-blob {
+  filter: blur(40px) saturate(140%);
+  opacity: 0.18;
+}
+
+@keyframes blob-move {
+  0% { transform: translate(-48%, -2%) scale(1); }
+  33% { transform: translate(-52%, 2%) scale(1.06); }
+  66% { transform: translate(-50%, -1%) scale(0.98); }
+  100% { transform: translate(-48%, -2%) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob { animation: none; transform: translateX(-50%); }
+}
+
+section.relative > .container { position: relative; z-index: 2; }
+
+@media (max-width: 640px) {
+  .hero-blob { width: 360px; height: 160px; top: 10%; }
+  .container .text-4xl { font-size: 1.6rem; }
+}
+
 /* ===========================================================
    EXTENSION CARD (Full-cover image with animated overlay)
 =========================================================== */
 
-/* ===== extension-card: reveal-on-hover (medium cinematic blur) ===== */
-
 .extension-card {
   position: relative;
   width: 100%;
-  height: 340px;               /* card height */
+  height: 340px;
   max-width: 420px;
   border-radius: 14px;
   overflow: hidden;
   background: #0b0b0c;
   box-shadow: 0 14px 40px rgba(8,10,14,0.45);
   display: block;
-  isolation: isolate;          /* contain filters/backdrop */
+  isolation: isolate;
 }
 
-/* screenshot layer */
 .extension-card__img {
   position: absolute;
   inset: 0;
@@ -101,7 +175,6 @@ html, body, #__next {
   will-change: transform, filter, opacity;
 }
 
-/* bottom overlay for legibility */
 .extension-card__overlay {
   position: absolute;
   inset: 0;
@@ -113,7 +186,6 @@ html, body, #__next {
     rgba(0,0,0,0.42) 70%);
 }
 
-/* content wrapper (title, desc, icons) */
 .extension-card__content {
   position: absolute;
   left: 0;
@@ -129,7 +201,6 @@ html, body, #__next {
   transition: padding 220ms ease;
 }
 
-/* left meta column holds title + (hidden) desc */
 .extension-card__meta {
   max-width: 72%;
   color: #fff;
@@ -138,7 +209,6 @@ html, body, #__next {
   gap: 8px;
 }
 
-/* title default: visible, sits low */
 .extension-card__title {
   margin: 0;
   color: #fff;
@@ -151,7 +221,6 @@ html, body, #__next {
   will-change: transform, opacity;
 }
 
-/* hidden description (revealed on hover) */
 .extension-card__desc {
   margin: 0;
   color: rgba(255,255,255,0.92);
@@ -167,7 +236,6 @@ html, body, #__next {
   overflow: hidden;
 }
 
-/* icon area */
 .extension-card__actions {
   display: flex;
   gap: 10px;
@@ -175,7 +243,6 @@ html, body, #__next {
   padding-bottom: 4px;
 }
 
-/* icon-only button */
 .btn-icon {
   display: inline-grid;
   place-items: center;
@@ -198,7 +265,6 @@ html, body, #__next {
   outline: none;
 }
 
-/* hover states (apply blur & reveal) */
 .extension-card:hover .extension-card__img,
 .extension-card:focus-within .extension-card__img {
   filter: blur(9px) saturate(95%);
@@ -206,27 +272,23 @@ html, body, #__next {
   opacity: 0.98;
 }
 
-/* title slides upward */
 .extension-card:hover .extension-card__title,
 .extension-card:focus-within .extension-card__title {
   transform: translateY(-46px);
 }
 
-/* reveal description */
 .extension-card:hover .extension-card__desc,
 .extension-card:focus-within .extension-card__desc {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* slightly de-emphasize icons on hover */
 .extension-card:hover .btn-icon,
 .extension-card:focus-within .btn-icon {
   opacity: 0.88;
   transform: translateY(-4px);
 }
 
-/* reduce visual noise for motion-reduced users */
 @media (prefers-reduced-motion: reduce) {
   .extension-card__img,
   .extension-card__title,
@@ -240,14 +302,11 @@ html, body, #__next {
   .extension-card:hover .extension-card__desc { opacity: 1; transform: none; }
 }
 
-/* responsive tweaks */
 @media (max-width: 880px) {
   .extension-card { height: 300px; border-radius: 12px; }
   .extension-card__title { font-size: 1.05rem; }
   .btn-icon { width: 42px; height: 42px; }
 }
-
-
 
 /* ===========================================================
    VIDEO PLAYER (cinematic)
@@ -301,9 +360,8 @@ html, body, #__next {
     border-radius: 12px;
   }
 }
-/* ================= Accessible helpers ================= */
 
-/* screen-reader-only — use instead of inline visually-hidden styles */
+/* ================= Accessible helpers ================= */
 .sr-only {
   position: absolute !important;
   width: 1px;
@@ -320,5 +378,234 @@ html, body, #__next {
 /* line-clamp compatibility: add standard property along with webkit prefix */
 .extension-card__desc {
   -webkit-line-clamp: 2;
-  line-clamp: 2; /* preferred standard (some linters ask for it) */
+  line-clamp: 2;
+}
+/* ================= HowTo section UI improvements ================= */
+
+.howto-card {
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 420ms ease;
+  transform-origin: center;
+}
+.howto-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(6,8,14,0.18);
+}
+
+/* download icon-only button */
+.download-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+  color: #0f172a;
+  box-shadow: 0 8px 20px rgba(2,6,12,0.06);
+  border: 1px solid rgba(15,23,42,0.04);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.download-icon-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(2,6,12,0.12);
+}
+
+/* list steps styling */
+.howto-list { margin: 0; padding: 0; list-style: none; }
+.howto-list li { display: flex; align-items: flex-start; gap: 12px; }
+.step-num {
+  min-width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background: linear-gradient(180deg,#eef2ff,#e9f0ff);
+  color: #3b3f7a;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(7,8,23,0.06);
+}
+
+/* dark-mode step number */
+.dark .step-num {
+  background: linear-gradient(180deg, rgba(20,30,50,0.6), rgba(10,16,30,0.6));
+  color: #dbeafe;
+}
+
+/* animated underline for the howto heading */
+.animated-heading {
+  position: relative;
+  display: inline-block;
+}
+.animated-heading::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -12px;
+  width: 120px;
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(99,102,241,1), rgba(139,92,246,0.9), rgba(34,211,238,0.95));
+  opacity: 0.95;
+  filter: blur(8px);
+  transition: transform 420ms ease, opacity 420ms ease;
+  transform-origin: center;
+}
+
+/* small hover/entrance effect when heading in viewport (motion handled by framer) */
+.animated-heading:hover::after {
+  transform: translateX(-50%) scaleX(1.06);
+}
+
+/* responsive tweaks */
+@media (max-width: 640px) {
+  .download-icon-btn { width: 36px; height: 36px; }
+  .step-num { min-width: 26px; height: 26px; font-size: 0.78rem; }
+  .animated-heading::after { width: 90px; bottom: -10px; height: 5px; }
+}
+
+/* ================= Footer alignment & balance ================= */
+/* Scoped to .site-footer to avoid leaking styles */
+.site-footer {
+  background: var(--bg);
+  color: var(--text);
+  border-top: 1px solid rgba(15,23,42,0.04);
+}
+
+/* Inner wrapper - vertical stack and center alignment */
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Heading: slightly bolder and responsive sizes for balance */
+.footer-heading {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.08;
+  font-size: 1.25rem; /* mobile baseline (20px) */
+  color: var(--text);
+}
+
+/* Larger on medium+ screens for stronger hierarchy */
+@media (min-width: 768px) {
+  .footer-heading { font-size: 1.875rem; /* 30px */ }
+}
+
+/* Subtext: restrained width, comfortable line-height */
+.footer-subtext {
+  margin: 0;
+  max-width: 44ch; /* keeps lines readable */
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Call-to-action: makes the button feel balanced with the heading */
+.footer-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.62rem 1.05rem; /* ties to font-size for visual balance */
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(79,70,229,1), rgba(99,102,241,1));
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 26px rgba(15,23,42,0.12);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  font-size: 0.98rem;
+  border: none;
+}
+
+/* Hover / focus stay accessible */
+.footer-cta:hover,
+.footer-cta:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(15,23,42,0.18);
+  outline: none;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .footer-cta { transition: none; transform: none; }
+}
+
+/* Social icons row */
+.footer-social {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 1.25rem; /* baseline size; icons scale from em */
+}
+
+/* Each link gets consistent spacing and interactive affordance */
+.footer-social__link {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(15,23,42,0.03);
+}
+
+/* Icon SVG sizing to ensure pixel-perfect alignment */
+.footer-social__link svg {
+  width: 1.1em;
+  height: 1.1em;
+  display: block;
+  margin: 0;
+}
+
+/* Hover & focus state */
+.footer-social__link:hover,
+.footer-social__link:focus {
+  transform: translateY(-4px);
+  color: rgba(99,102,241,1);
+  background: rgba(99,102,241,0.04);
+  outline: none;
+  box-shadow: 0 12px 28px rgba(2,6,23,0.06);
+}
+
+/* Footer note / copyright */
+.footer-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Adjust spacing on smaller screens so everything remains proportional */
+@media (max-width: 640px) {
+  .site-footer { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+  .footer-heading { font-size: 1.125rem; } /* 18px */
+  .footer-cta { padding: 0.55rem 0.9rem; font-size: 0.95rem; }
+  .footer-social { gap: 14px; font-size: 1.1rem; }
+  .footer-social__link { width: 40px; height: 40px; border-radius: 8px; }
+  .footer-note { margin-top: 0.6rem; font-size: 0.82rem; }
+}
+
+/* Ensure dark mode color adjustments remain consistent */
+.dark .site-footer {
+  background: var(--bg);
+  color: var(--text);
+  border-top-color: rgba(255,255,255,0.03);
+}
+
+.dark .footer-cta {
+  /* maintain contrast in dark mode */
+  background: linear-gradient(180deg, rgba(79,70,229,1), rgba(99,102,241,1));
+  color: #fff;
 }
