@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== Page hero helpers ===== */
+.page-hero {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.page-hero .hero-sub {
+  color: var(--muted);
+}
+
+.page-hero::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin-top: 8px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.04));
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .page-hero h1 { font-size: 1.5rem; }
+  .page-hero .hero-sub { font-size: 0.95rem; }
+  .page-hero::after { height: 28px; }
+}
+
+main > section.container:first-child {
+  margin-top: 0.25rem;
+}
+
+header {
+  box-shadow: 0 1px 0 rgba(15,23,42,0.03);
+}
+
 /* ================= Theme Colors ================= */
 :root {
   --bg: #ffffff;
@@ -67,24 +103,62 @@ html, body, #__next {
   transform: translateX(0) rotate(20deg);
 }
 
+/* ===== Hero decorative blob + polish ===== */
+.hero-blob {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: 520px;
+  height: 240px;
+  border-radius: 38%;
+  filter: blur(36px) saturate(120%);
+  background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(99,102,241,0.75) 30%, rgba(14,165,233,0.85) 70%);
+  opacity: 0.14;
+  z-index: 0;
+  mix-blend-mode: screen;
+  animation: blob-move 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.dark .hero-blob {
+  filter: blur(40px) saturate(140%);
+  opacity: 0.18;
+}
+
+@keyframes blob-move {
+  0% { transform: translate(-48%, -2%) scale(1); }
+  33% { transform: translate(-52%, 2%) scale(1.06); }
+  66% { transform: translate(-50%, -1%) scale(0.98); }
+  100% { transform: translate(-48%, -2%) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob { animation: none; transform: translateX(-50%); }
+}
+
+section.relative > .container { position: relative; z-index: 2; }
+
+@media (max-width: 640px) {
+  .hero-blob { width: 360px; height: 160px; top: 10%; }
+  .container .text-4xl { font-size: 1.6rem; }
+}
+
 /* ===========================================================
    EXTENSION CARD (Full-cover image with animated overlay)
 =========================================================== */
 
 .extension-card {
   position: relative;
-  height: 320px;
+  width: 100%;
+  height: 340px;
+  max-width: 420px;
   border-radius: 14px;
   overflow: hidden;
+  background: #0b0b0c;
+  box-shadow: 0 14px 40px rgba(8,10,14,0.45);
   display: block;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(20, 30, 60, 0.06);
-  transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
-}
-.extension-card:hover,
-.extension-card:focus-within {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 48px rgba(20,30,60,0.12);
+  isolation: isolate;
 }
 
 .extension-card__img {
@@ -93,170 +167,145 @@ html, body, #__next {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
-  filter: saturate(0.98) contrast(0.98);
-  transform-origin: center;
-  transition: transform .6s ease, filter .4s ease;
-}
-.extension-card:hover .extension-card__img,
-.extension-card:focus-within .extension-card__img {
-  transform: scale(1.05);
-  filter: saturate(1) contrast(1.02);
+  transition: transform 650ms cubic-bezier(.2,.9,.2,1),
+              filter 650ms cubic-bezier(.2,.9,.2,1),
+              opacity 450ms ease;
+  will-change: transform, filter, opacity;
 }
 
-/* overlay gradient */
 .extension-card__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8,10,12,0.02) 0%, rgba(8,10,12,0.04) 35%, rgba(0,0,0,0.6) 70%);
+  z-index: 1;
   pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.00) 0%,
+    rgba(0,0,0,0.06) 30%,
+    rgba(0,0,0,0.42) 70%);
 }
 
-/* overlay content */
 .extension-card__content {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 18px;
+  padding: 20px;
   display: flex;
   gap: 12px;
   align-items: flex-end;
   justify-content: space-between;
-  backdrop-filter: blur(4px) saturate(120%);
-  z-index: 2;
-  background: linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.02) 20%, rgba(0,0,0,0.18) 100%);
+  z-index: 3;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.12) 40%, rgba(0,0,0,0.36) 90%);
+  transition: padding 220ms ease;
 }
 
 .extension-card__meta {
   max-width: 72%;
   color: #fff;
-}
-.extension-card__title {
-  margin: 0;
-  color: #ffffff;
-  font-size: 1.125rem;
-  font-weight: 700;
-  text-shadow: 0 6px 18px rgba(0,0,0,0.5);
-}
-.extension-card__desc {
-  margin-top: 6px;
-  margin-bottom: 8px;
-  color: rgba(255,255,255,0.92);
-  font-size: 0.92rem;
-  line-height: 1.25;
-  max-height: 3.1rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* tags */
-.extension-card__tags,
-.tag {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
 }
-.tag {
-  font-size: 0.72rem;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.18);
-  color: rgba(255,255,255,0.95);
-  backdrop-filter: blur(6px);
-  transition: transform .24s ease, background .24s ease, box-shadow .24s;
-  box-shadow: 0 4px 10px rgba(10,12,18,0.15);
-  position: relative;
-}
-.extension-card .tag:hover,
-.extension-card:hover .tag {
-  transform: translateY(-4px) scale(1.02);
-  background: linear-gradient(90deg, rgba(255,255,255,0.24), rgba(255,255,255,0.16));
-  box-shadow: 0 10px 24px rgba(10,12,18,0.2);
-}
-.tag::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  mix-blend-mode: overlay;
-  opacity: 0;
-  transition: opacity .3s;
-}
-.extension-card:hover .tag::after {
-  opacity: .18;
-  background: linear-gradient(120deg, rgba(255,255,255,0.45), rgba(255,255,255,0.05));
-  animation: tag-shimmer 1.6s linear infinite;
-}
-@keyframes tag-shimmer {
-  0% { transform: translateX(-30%); }
-  100% { transform: translateX(130%); }
+
+.extension-card__title {
+  margin: 0;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.02;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.55);
+  transform: translateY(0);
+  transition: transform 520ms cubic-bezier(.2,.9,.2,1), opacity 320ms ease;
+  will-change: transform, opacity;
 }
 
-/* actions (buttons) */
+.extension-card__desc {
+  margin: 0;
+  color: rgba(255,255,255,0.92);
+  font-size: 0.92rem;
+  line-height: 1.18;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: transform 520ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease;
+  will-change: transform, opacity;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .extension-card__actions {
   display: flex;
   gap: 10px;
   align-items: center;
+  padding-bottom: 4px;
 }
 
-/* new gradient download button */
-.btn-download {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(90deg, #6D28D9 0%, #06B6D4 100%);
-  color: white;
-  padding: 10px 14px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  box-shadow: 0 10px 30px rgba(13, 61, 95, 0.14);
-  transform: translateY(0);
-  transition: transform .18s ease, box-shadow .18s ease, filter .18s;
-  border: none;
-}
-.btn-download:hover,
-.btn-download:focus {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 40px rgba(13, 61, 95, 0.18);
-  filter: saturate(1.05) contrast(1.02);
-  outline: none;
-}
-
-/* github icon button */
-.btn-github {
+.btn-icon {
   display: inline-grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.12);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
   color: white;
   text-decoration: none;
-  transition: transform .18s, background .18s, box-shadow .18s;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transition: transform 260ms ease, background 260ms ease, opacity 260ms ease, box-shadow 260ms ease;
+  box-shadow: 0 10px 26px rgba(2,6,12,0.32);
   font-size: 1.05rem;
+  border: 1px solid rgba(255,255,255,0.035);
 }
-.btn-github:hover,
-.btn-github:focus {
-  transform: translateY(-4px) scale(1.02);
-  background: rgba(255,255,255,0.18);
-  box-shadow: 0 18px 36px rgba(0,0,0,0.24);
+.btn-icon:hover,
+.btn-icon:focus {
+  transform: translateY(-6px);
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.36);
   outline: none;
 }
 
-/* responsive tweaks */
-@media (max-width: 768px) {
-  .extension-card { height: 260px; border-radius: 12px; }
-  .extension-card__content { padding: 12px; }
-  .extension-card__meta { max-width: 62%; }
-  .extension-card__title { font-size: 1rem; }
+.extension-card:hover .extension-card__img,
+.extension-card:focus-within .extension-card__img {
+  filter: blur(9px) saturate(95%);
+  transform: scale(1.04);
+  opacity: 0.98;
 }
-@media (max-width: 420px) {
-  .extension-card { height: 240px; }
-  .extension-card__meta { max-width: 60%; }
+
+.extension-card:hover .extension-card__title,
+.extension-card:focus-within .extension-card__title {
+  transform: translateY(-46px);
+}
+
+.extension-card:hover .extension-card__desc,
+.extension-card:focus-within .extension-card__desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.extension-card:hover .btn-icon,
+.extension-card:focus-within .btn-icon {
+  opacity: 0.88;
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .extension-card__img,
+  .extension-card__title,
+  .extension-card__desc,
+  .btn-icon {
+    transition: none !important;
+    transform: none !important;
+  }
+  .extension-card:hover .extension-card__img { filter: none; transform: none; }
+  .extension-card:hover .extension-card__title { transform: none; }
+  .extension-card:hover .extension-card__desc { opacity: 1; transform: none; }
+}
+
+@media (max-width: 880px) {
+  .extension-card { height: 300px; border-radius: 12px; }
+  .extension-card__title { font-size: 1.05rem; }
+  .btn-icon { width: 42px; height: 42px; }
 }
 
 /* ===========================================================
@@ -310,4 +359,253 @@ html, body, #__next {
     max-height: 320px;
     border-radius: 12px;
   }
+}
+
+/* ================= Accessible helpers ================= */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* line-clamp compatibility: add standard property along with webkit prefix */
+.extension-card__desc {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+/* ================= HowTo section UI improvements ================= */
+
+.howto-card {
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 420ms ease;
+  transform-origin: center;
+}
+.howto-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(6,8,14,0.18);
+}
+
+/* download icon-only button */
+.download-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+  color: #0f172a;
+  box-shadow: 0 8px 20px rgba(2,6,12,0.06);
+  border: 1px solid rgba(15,23,42,0.04);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.download-icon-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(2,6,12,0.12);
+}
+
+/* list steps styling */
+.howto-list { margin: 0; padding: 0; list-style: none; }
+.howto-list li { display: flex; align-items: flex-start; gap: 12px; }
+.step-num {
+  min-width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background: linear-gradient(180deg,#eef2ff,#e9f0ff);
+  color: #3b3f7a;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(7,8,23,0.06);
+}
+
+/* dark-mode step number */
+.dark .step-num {
+  background: linear-gradient(180deg, rgba(20,30,50,0.6), rgba(10,16,30,0.6));
+  color: #dbeafe;
+}
+
+/* animated underline for the howto heading */
+.animated-heading {
+  position: relative;
+  display: inline-block;
+}
+.animated-heading::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -12px;
+  width: 120px;
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(99,102,241,1), rgba(139,92,246,0.9), rgba(34,211,238,0.95));
+  opacity: 0.95;
+  filter: blur(8px);
+  transition: transform 420ms ease, opacity 420ms ease;
+  transform-origin: center;
+}
+
+/* small hover/entrance effect when heading in viewport (motion handled by framer) */
+.animated-heading:hover::after {
+  transform: translateX(-50%) scaleX(1.06);
+}
+
+/* responsive tweaks */
+@media (max-width: 640px) {
+  .download-icon-btn { width: 36px; height: 36px; }
+  .step-num { min-width: 26px; height: 26px; font-size: 0.78rem; }
+  .animated-heading::after { width: 90px; bottom: -10px; height: 5px; }
+}
+
+/* ================= Footer alignment & balance ================= */
+/* Scoped to .site-footer to avoid leaking styles */
+.site-footer {
+  background: var(--bg);
+  color: var(--text);
+  border-top: 1px solid rgba(15,23,42,0.04);
+}
+
+/* Inner wrapper - vertical stack and center alignment */
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Heading: slightly bolder and responsive sizes for balance */
+.footer-heading {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.08;
+  font-size: 1.25rem; /* mobile baseline (20px) */
+  color: var(--text);
+}
+
+/* Larger on medium+ screens for stronger hierarchy */
+@media (min-width: 768px) {
+  .footer-heading { font-size: 1.875rem; /* 30px */ }
+}
+
+/* Subtext: restrained width, comfortable line-height */
+.footer-subtext {
+  margin: 0;
+  max-width: 44ch; /* keeps lines readable */
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Call-to-action: makes the button feel balanced with the heading */
+.footer-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.62rem 1.05rem; /* ties to font-size for visual balance */
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(79,70,229,1), rgba(99,102,241,1));
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 26px rgba(15,23,42,0.12);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  font-size: 0.98rem;
+  border: none;
+}
+
+/* Hover / focus stay accessible */
+.footer-cta:hover,
+.footer-cta:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(15,23,42,0.18);
+  outline: none;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .footer-cta { transition: none; transform: none; }
+}
+
+/* Social icons row */
+.footer-social {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 1.25rem; /* baseline size; icons scale from em */
+}
+
+/* Each link gets consistent spacing and interactive affordance */
+.footer-social__link {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(15,23,42,0.03);
+}
+
+/* Icon SVG sizing to ensure pixel-perfect alignment */
+.footer-social__link svg {
+  width: 1.1em;
+  height: 1.1em;
+  display: block;
+  margin: 0;
+}
+
+/* Hover & focus state */
+.footer-social__link:hover,
+.footer-social__link:focus {
+  transform: translateY(-4px);
+  color: rgba(99,102,241,1);
+  background: rgba(99,102,241,0.04);
+  outline: none;
+  box-shadow: 0 12px 28px rgba(2,6,23,0.06);
+}
+
+/* Footer note / copyright */
+.footer-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Adjust spacing on smaller screens so everything remains proportional */
+@media (max-width: 640px) {
+  .site-footer { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+  .footer-heading { font-size: 1.125rem; } /* 18px */
+  .footer-cta { padding: 0.55rem 0.9rem; font-size: 0.95rem; }
+  .footer-social { gap: 14px; font-size: 1.1rem; }
+  .footer-social__link { width: 40px; height: 40px; border-radius: 8px; }
+  .footer-note { margin-top: 0.6rem; font-size: 0.82rem; }
+}
+
+/* Ensure dark mode color adjustments remain consistent */
+.dark .site-footer {
+  background: var(--bg);
+  color: var(--text);
+  border-top-color: rgba(255,255,255,0.03);
+}
+
+.dark .footer-cta {
+  /* maintain contrast in dark mode */
+  background: linear-gradient(180deg, rgba(79,70,229,1), rgba(99,102,241,1));
+  color: #fff;
 }
