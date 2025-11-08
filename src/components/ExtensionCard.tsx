@@ -1,73 +1,36 @@
-// src/components/ExtensionCard.tsx
+// ExtensionCard.tsx
 "use client";
 
 import React from "react";
-import { FaGithub, FaDownload } from "react-icons/fa";
-
-/**
- * Redesigned extension card:
- * - Screenshot covers entire card (background-image)
- * - Bottom overlay contains title, shortDesc, animated tags, actions
- * - Accessible: alt image included for screen readers, buttons keyboard-focusable
- *
- * Make sure screenshot paths exist under /public/screenshots/ and match data/extensions.json
- */
+import { FaGithub, FaReact } from "react-icons/fa";
 
 type Ext = {
   title: string;
   slug: string;
   shortDesc: string;
   tags?: string[];
-  screenshots?: string[]; // example: ['/screenshots/article-highlighter-1.jpg']
+  screenshots?: string[];
   githubUrl?: string;
   downloadUrl?: string;
 };
 
 export default function ExtensionCard({ ext }: { ext: Ext }) {
-  // Use first screenshot, fallback to placeholder
-  const declared = ext.screenshots && ext.screenshots.length > 0 ? ext.screenshots[0] : "/screenshots/placeholder.jpg";
-  const [bgSrc, setBgSrc] = React.useState(declared);
+  const initial = ext.screenshots && ext.screenshots.length > 0 ? ext.screenshots[0] : "/screenshots/placeholder.jpg";
+  const [bgSrc, setBgSrc] = React.useState(initial);
 
-  // When bg fails, try common variants then placeholder (defensive)
   const onBgError = () => {
-    const fallbackCandidates = (() => {
-      const slash = bgSrc.lastIndexOf("/");
-      const filename = bgSrc.slice(slash + 1);
-      const dir = bgSrc.slice(0, slash + 1);
-      const nameNoExt = filename.replace(/\.(jpg|jpeg|png|webp)$/i, "");
-      return [
-        `${dir}${nameNoExt}.jpg`,
-        `${dir}${nameNoExt}.png`,
-        `${dir}${nameNoExt}.webp`,
-        "/screenshots/placeholder.jpg"
-      ];
-    })();
-
-    for (const c of fallbackCandidates) {
-      if (c !== bgSrc) {
-        setBgSrc(c);
-        return;
-      }
-    }
     setBgSrc("/screenshots/placeholder.jpg");
   };
 
   return (
-    <article
-      className="extension-card group"
-      aria-labelledby={`ext-${ext.slug}-title`}
-      role="article"
-    >
-      {/* Background image element used for cover; we include an img for SR and for onError handling */}
+    <article className="extension-card" aria-labelledby={`ext-${ext.slug}-title`}>
       <img
         src={bgSrc}
         alt={`${ext.title} screenshot`}
         className="extension-card__img"
         onError={onBgError}
-        aria-hidden="true" /* decorative visually because title & desc are in overlay */
       />
 
-      {/* overlay gradient (light to transparent) and content anchored at bottom */}
       <div className="extension-card__overlay" />
 
       <div className="extension-card__content">
@@ -79,7 +42,7 @@ export default function ExtensionCard({ ext }: { ext: Ext }) {
           <p className="extension-card__desc">{ext.shortDesc}</p>
 
           <div className="extension-card__tags" aria-hidden>
-            {ext.tags?.map((t) => (
+            {ext.tags?.slice(0, 4).map((t) => (
               <span key={t} className="tag">
                 {t}
               </span>
@@ -88,23 +51,22 @@ export default function ExtensionCard({ ext }: { ext: Ext }) {
         </div>
 
         <div className="extension-card__actions">
-          {/* Download button (primary) */}
           <a
             href={ext.downloadUrl || "#"}
-            className="btn-download"
+            className="btn-icon"
+            title={`Download ${ext.title}`}
             aria-label={`Download ${ext.title}`}
-            tabIndex={0}
+            rel="noopener noreferrer"
           >
-            <FaDownload className="mr-2" />
-            Download
+            <FaReact />
           </a>
 
-          {/* GitHub icon-only button */}
           <a
             href={ext.githubUrl || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-github"
+            className="btn-icon"
+            title={`Open ${ext.title} on GitHub`}
             aria-label={`Open ${ext.title} on GitHub`}
           >
             <FaGithub />
