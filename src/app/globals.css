@@ -144,9 +144,7 @@ section.relative > .container { position: relative; z-index: 2; }
   .container .text-4xl { font-size: 1.6rem; }
 }
 
-/* ===========================================================
-   EXTENSION CARD (Full-cover image with animated overlay)
-=========================================================== */
+/* Extension card */
 
 .extension-card {
   position: relative;
@@ -308,9 +306,7 @@ section.relative > .container { position: relative; z-index: 2; }
   .btn-icon { width: 42px; height: 42px; }
 }
 
-/* ===========================================================
-   VIDEO PLAYER (cinematic)
-=========================================================== */
+/* VIDEO PLAYER (cinematic) */
 
 .video-frame-wrapper {
   width: 100%;
