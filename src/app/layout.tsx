@@ -32,8 +32,7 @@ async function getExtensionsCount(): Promise<number> {
     if (Array.isArray(parsed)) return parsed.length;
     return 0;
   } catch (err) {
-    // if anything goes wrong, return 0 so UI remains stable
-    // eslint-disable-next-line no-console
+    
     console.error("Error reading extensions.json:", err);
     return 0;
   }
@@ -47,7 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head />
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-          {/* ========== HEADER (refreshed branding; live count badge) ========== */}
+         
           <header className="py-3 backdrop-blur-sm">
             <div className="container flex items-center justify-between">
               <Link href="/" className="flex items-center gap-3">
@@ -56,7 +55,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     <div className="h-9 w-9 rounded-full bg-white/10" />
                   </div>
 
-                  {/* Live badge wired to data/extensions.json */}
+                  
                   <span
                     className="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full bg-white text-indigo-700 shadow-sm"
                     aria-hidden="false"
@@ -82,10 +81,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </div>
           </header>
 
-          {/* ================= MAIN ================= */}
+         
           <main>{children}</main>
 
-          {/* ================= FOOTER ================= */}
+          
           <footer className="site-footer py-20 mt-12">
             <div className="container mx-auto px-6">
               <div className="site-footer__inner">

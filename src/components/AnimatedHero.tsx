@@ -4,15 +4,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-/**
- * Creative hero with animated gradient blob and bold heading.
- * Keeps semantics and respects reduced-motion settings.
- */
 
 export default function AnimatedHero() {
   return (
     <section className="relative mb-12">
-      {/* Decorative moving blob (pure CSS) */}
+     
       <div className="hero-blob" aria-hidden="true" />
 
       <div className="container text-center relative z-10">

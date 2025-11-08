@@ -5,13 +5,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import VideoPlayer from "./VideoPlayer";
 
-/**
- * HowToDownloadSection - small presentation tweaks:
- * 1) Poster image is used as a decorative background behind the video container so the thumbnail
- *    is visible even if the <video> element is momentarily black.
- * 2) Removed the "Step-by-step guide available below" line while preserving spacing between
- *    the heading and the numbered list (keeps visual rhythm unchanged).
- */
 
 export default function HowToDownloadSection() {
   const tutorials = [

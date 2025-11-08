@@ -38,7 +38,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ===== Extension Gallery ===== */}
+      {/* Extension Gallery */}
       <section className="container py-12">
         {/* Animated hero (creative headline + tagline) */}
         <AnimatedHero />
@@ -55,7 +55,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== How to Download Section ===== */}
+      {/* How to Download */}
       <HowToDownloadSection />
     </>
   );
