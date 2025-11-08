@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* minimal theme tokens used by the app */
+/* ================= Theme Colors ================= */
 :root {
   --bg: #ffffff;
   --text: #0f172a;
@@ -21,9 +21,19 @@ html, body, #__next {
   height: 100%;
   background: var(--bg);
   color: var(--text);
+  scroll-behavior: smooth;
 }
 
-/* Card glass & shadow */
+/* ================= General Containers ================= */
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* ================= Glassy Card Utility ================= */
 .card {
   background: var(--card-bg);
   -webkit-backdrop-filter: blur(6px);
@@ -32,7 +42,13 @@ html, body, #__next {
   box-shadow: 0 6px 30px rgba(2,6,23,0.08);
 }
 
-/* Shimmer effect (optional) */
+/* ================= Focus Ring ================= */
+.focus-ring:focus {
+  outline: 3px solid rgba(99,102,241,0.16);
+  outline-offset: 2px;
+}
+
+/* ================= Shimmer Hover ================= */
 .card-shimmer { position: relative; overflow: hidden; }
 .card-shimmer::after {
   content: "";
@@ -51,49 +67,223 @@ html, body, #__next {
   transform: translateX(0) rotate(20deg);
 }
 
-/* Focus ring utility */
-.focus-ring:focus {
-  outline: 3px solid rgba(99,102,241,0.16);
-  outline-offset: 2px;
+/* ===========================================================
+   EXTENSION CARD (Full-cover image with animated overlay)
+=========================================================== */
+
+.extension-card {
+  position: relative;
+  height: 320px;
+  border-radius: 14px;
+  overflow: hidden;
+  display: block;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(20, 30, 60, 0.06);
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+}
+.extension-card:hover,
+.extension-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 48px rgba(20,30,60,0.12);
 }
 
-/* Container */
-.container {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+.extension-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.98) contrast(0.98);
+  transform-origin: center;
+  transition: transform .6s ease, filter .4s ease;
+}
+.extension-card:hover .extension-card__img,
+.extension-card:focus-within .extension-card__img {
+  transform: scale(1.05);
+  filter: saturate(1) contrast(1.02);
 }
 
-/* ---------- Video player styles (responsive 16:9 cinematic) ---------- */
+/* overlay gradient */
+.extension-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,10,12,0.02) 0%, rgba(8,10,12,0.04) 35%, rgba(0,0,0,0.6) 70%);
+  pointer-events: none;
+}
+
+/* overlay content */
+.extension-card__content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  justify-content: space-between;
+  backdrop-filter: blur(4px) saturate(120%);
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.02) 20%, rgba(0,0,0,0.18) 100%);
+}
+
+.extension-card__meta {
+  max-width: 72%;
+  color: #fff;
+}
+.extension-card__title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.5);
+}
+.extension-card__desc {
+  margin-top: 6px;
+  margin-bottom: 8px;
+  color: rgba(255,255,255,0.92);
+  font-size: 0.92rem;
+  line-height: 1.25;
+  max-height: 3.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* tags */
+.extension-card__tags,
+.tag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag {
+  font-size: 0.72rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.95);
+  backdrop-filter: blur(6px);
+  transition: transform .24s ease, background .24s ease, box-shadow .24s;
+  box-shadow: 0 4px 10px rgba(10,12,18,0.15);
+  position: relative;
+}
+.extension-card .tag:hover,
+.extension-card:hover .tag {
+  transform: translateY(-4px) scale(1.02);
+  background: linear-gradient(90deg, rgba(255,255,255,0.24), rgba(255,255,255,0.16));
+  box-shadow: 0 10px 24px rgba(10,12,18,0.2);
+}
+.tag::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.extension-card:hover .tag::after {
+  opacity: .18;
+  background: linear-gradient(120deg, rgba(255,255,255,0.45), rgba(255,255,255,0.05));
+  animation: tag-shimmer 1.6s linear infinite;
+}
+@keyframes tag-shimmer {
+  0% { transform: translateX(-30%); }
+  100% { transform: translateX(130%); }
+}
+
+/* actions (buttons) */
+.extension-card__actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* new gradient download button */
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, #6D28D9 0%, #06B6D4 100%);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 30px rgba(13, 61, 95, 0.14);
+  transform: translateY(0);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s;
+  border: none;
+}
+.btn-download:hover,
+.btn-download:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(13, 61, 95, 0.18);
+  filter: saturate(1.05) contrast(1.02);
+  outline: none;
+}
+
+/* github icon button */
+.btn-github {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+  color: white;
+  text-decoration: none;
+  transition: transform .18s, background .18s, box-shadow .18s;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  font-size: 1.05rem;
+}
+.btn-github:hover,
+.btn-github:focus {
+  transform: translateY(-4px) scale(1.02);
+  background: rgba(255,255,255,0.18);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.24);
+  outline: none;
+}
+
+/* responsive tweaks */
+@media (max-width: 768px) {
+  .extension-card { height: 260px; border-radius: 12px; }
+  .extension-card__content { padding: 12px; }
+  .extension-card__meta { max-width: 62%; }
+  .extension-card__title { font-size: 1rem; }
+}
+@media (max-width: 420px) {
+  .extension-card { height: 240px; }
+  .extension-card__meta { max-width: 60%; }
+}
+
+/* ===========================================================
+   VIDEO PLAYER (cinematic)
+=========================================================== */
 
 .video-frame-wrapper {
   width: 100%;
 }
 
-/* Maintain a clean 16:9 area that scales but caps height on very tall screens */
 .video-frame {
   position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-  max-height: 520px; /* cinematic cap */
+  max-height: 520px;
   border-radius: 14px;
   overflow: hidden;
   background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.04));
   box-shadow: 0 10px 30px rgba(20, 30, 60, 0.08);
 }
-
-/* Make the poster & video fill the frame like a thumbnail */
 .video-element {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* fills and crops to keep cinematic look */
+  object-fit: cover;
   display: block;
-  background-color: #000; /* fallback while poster loads */
+  background-color: #000;
 }
-
-/* Centered circular play overlay (large & visible) */
 .video-play-overlay {
   position: absolute;
   inset: 0;
@@ -115,7 +305,6 @@ html, body, #__next {
   transform: translateY(-2px);
 }
 
-/* small responsive tweak: reduce max-height on very small screens */
 @media (max-width: 640px) {
   .video-frame {
     max-height: 320px;
