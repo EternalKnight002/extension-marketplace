@@ -2,83 +2,115 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Download, Github, ImageIcon } from "lucide-react";
-import Modal from "./Modal";
-import clsx from "clsx";
+import { FaGithub, FaDownload } from "react-icons/fa";
 
 /**
- * Client-side interactive card (framer-motion, modal).
+ * Redesigned extension card:
+ * - Screenshot covers entire card (background-image)
+ * - Bottom overlay contains title, shortDesc, animated tags, actions
+ * - Accessible: alt image included for screen readers, buttons keyboard-focusable
+ *
+ * Make sure screenshot paths exist under /public/screenshots/ and match data/extensions.json
  */
 
 type Ext = {
   title: string;
   slug: string;
   shortDesc: string;
-  tags: string[];
-  screenshots: string[];
-  githubUrl: string;
-  downloadUrl: string;
+  tags?: string[];
+  screenshots?: string[]; // example: ['/screenshots/article-highlighter-1.jpg']
+  githubUrl?: string;
+  downloadUrl?: string;
 };
 
 export default function ExtensionCard({ ext }: { ext: Ext }) {
-  const [open, setOpen] = React.useState(false);
+  // Use first screenshot, fallback to placeholder
+  const declared = ext.screenshots && ext.screenshots.length > 0 ? ext.screenshots[0] : "/screenshots/placeholder.jpg";
+  const [bgSrc, setBgSrc] = React.useState(declared);
+
+  // When bg fails, try common variants then placeholder (defensive)
+  const onBgError = () => {
+    const fallbackCandidates = (() => {
+      const slash = bgSrc.lastIndexOf("/");
+      const filename = bgSrc.slice(slash + 1);
+      const dir = bgSrc.slice(0, slash + 1);
+      const nameNoExt = filename.replace(/\.(jpg|jpeg|png|webp)$/i, "");
+      return [
+        `${dir}${nameNoExt}.jpg`,
+        `${dir}${nameNoExt}.png`,
+        `${dir}${nameNoExt}.webp`,
+        "/screenshots/placeholder.jpg"
+      ];
+    })();
+
+    for (const c of fallbackCandidates) {
+      if (c !== bgSrc) {
+        setBgSrc(c);
+        return;
+      }
+    }
+    setBgSrc("/screenshots/placeholder.jpg");
+  };
 
   return (
-    <>
-      <motion.article
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.28 }}
-        className={clsx("card-shimmer card focus-ring p-4 rounded-2xl shadow-card h-full flex flex-col")}
-        tabIndex={0}
-        role="article"
-        aria-labelledby={`ext-${ext.slug}-title`}
-      >
-        <button onClick={() => setOpen(true)} aria-label={`Open screenshots for ${ext.title}`} className="relative rounded-lg overflow-hidden w-full h-40 mb-3 focus:outline-none">
-          <img src={ext.screenshots?.[0] || "/screenshots/placeholder.jpg"} alt={`${ext.title} screenshot`} className="w-full h-full object-cover" loading="lazy" />
-          <div className="absolute right-2 bottom-2 inline-flex items-center gap-2 rounded-full bg-white/80 dark:bg-black/60 px-2 py-1 text-xs">
-            <ImageIcon className="h-4 w-4" />
-            <span>{ext.screenshots?.length || 1}</span>
+    <article
+      className="extension-card group"
+      aria-labelledby={`ext-${ext.slug}-title`}
+      role="article"
+    >
+      {/* Background image element used for cover; we include an img for SR and for onError handling */}
+      <img
+        src={bgSrc}
+        alt={`${ext.title} screenshot`}
+        className="extension-card__img"
+        onError={onBgError}
+        aria-hidden="true" /* decorative visually because title & desc are in overlay */
+      />
+
+      {/* overlay gradient (light to transparent) and content anchored at bottom */}
+      <div className="extension-card__overlay" />
+
+      <div className="extension-card__content">
+        <div className="extension-card__meta">
+          <h3 id={`ext-${ext.slug}-title`} className="extension-card__title">
+            {ext.title}
+          </h3>
+
+          <p className="extension-card__desc">{ext.shortDesc}</p>
+
+          <div className="extension-card__tags" aria-hidden>
+            {ext.tags?.map((t) => (
+              <span key={t} className="tag">
+                {t}
+              </span>
+            ))}
           </div>
-        </button>
-
-        <h3 id={`ext-${ext.slug}-title`} className="text-lg font-semibold">{ext.title}</h3>
-
-        <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 line-clamp-2 flex-1">{ext.shortDesc}</p>
-
-        <div className="mt-3 flex items-center gap-2 flex-wrap">
-          {ext.tags.map((t) => (
-            <span key={t} className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-purple-500 to-cyan-400 text-white" aria-hidden>
-              {t}
-            </span>
-          ))}
         </div>
 
-        <div className="mt-4 flex items-center gap-3">
-          <a href={ext.downloadUrl} className="inline-flex items-center gap-2 rounded-full px-3 py-2 bg-gradient-to-r from-purple-500 to-cyan-400 text-white text-sm shadow-sm focus-ring" aria-label={`Download ${ext.title}`}>
-            <Download className="h-4 w-4" /> Download
+        <div className="extension-card__actions">
+          {/* Download button (primary) */}
+          <a
+            href={ext.downloadUrl || "#"}
+            className="btn-download"
+            aria-label={`Download ${ext.title}`}
+            tabIndex={0}
+          >
+            <FaDownload className="mr-2" />
+            Download
           </a>
 
-          <a href={ext.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm underline-offset-2" aria-label={`View ${ext.title} on GitHub`}>
-            <Github className="h-4 w-4" /> GitHub
+          {/* GitHub icon-only button */}
+          <a
+            href={ext.githubUrl || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-github"
+            aria-label={`Open ${ext.title} on GitHub`}
+          >
+            <FaGithub />
           </a>
-
-          <Link href={`/extensions/${ext.slug}`} className="ml-auto text-sm hover:underline" aria-label={`Open details for ${ext.title}`}>
-            Details →
-          </Link>
         </div>
-      </motion.article>
-
-      <Modal open={open} onOpenChange={setOpen} title={`${ext.title} screenshots`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {ext.screenshots.map((s, i) => (
-            <img key={s + i} src={s} alt={`${ext.title} screenshot ${i + 1}`} className="w-full h-60 object-cover rounded-md" loading="lazy" />
-          ))}
-        </div>
-      </Modal>
-    </>
+      </div>
+    </article>
   );
 }
