@@ -1,0 +1,91 @@
+[
+  {
+    "title": "Article Highlighter",
+    "slug": "article-highlighter",
+    "shortDesc": "Privacy-first Chrome extension to highlight text, add notes, and export highlights or full pages as PDFs.",
+    "longDesc": "Article Highlighter is a lightweight, privacy-focused Chrome extension for marking important text on web pages, attaching notes, and exporting your research. It stores all data locally (no servers), supports per-page persistence, and offers two export options: full-page PDF with highlights and a concise highlights-only PDF. Replace this text with the full README if you prefer. (Source README used.)",
+    "tags": ["chrome", "productivity", "research"],
+    "screenshots": [
+      "/screenshots/article-highlighter-1.jpg",
+      "/screenshots/article-highlighter-2.jpg"
+    ],
+    "githubUrl": "https://github.com/EternalKnight002/article-highlighter.git",
+    "downloadUrl": "https://github.com/EternalKnight002/article-highlighter/releases/download/v1/article-highlighter.zip",
+    "poster": "/videos/article-highlighter-poster.jpg"
+  },
+
+  {
+    "title": "Copy Code Cleaner",
+    "slug": "copy-code-cleaner",
+    "shortDesc": "Adds a one-click \"Copy Clean\" button to code blocks so you copy code without line numbers or artifacts.",
+    "longDesc": "Copy Code Cleaner intelligently detects code blocks (<pre>, <code>, etc.) and injects a 'Copy Clean' button. The cleaner removes line numbers, trims whitespace, decodes HTML entities, and offers options to preserve indentation. It's built as a tiny Manifest V3 Chrome extension with a configurable popup. (Source README used.)",
+    "tags": ["chrome", "developer", "ux"],
+    "screenshots": ["/screenshots/copy-code-cleaner-1.jpg"],
+    "githubUrl": "https://github.com/EternalKnight002/copy-code-cleaner.git",
+    "downloadUrl": "https://github.com/EternalKnight002/copy-code-cleaner/releases/download/v2/copy-code-cleaner.zip",
+    "poster": "/videos/copy-code-cleaner-poster.jpg"
+  },
+
+  {
+    "title": "LogTailer",
+    "slug": "logtailer",
+    "shortDesc": "Live console log aggregator for Chrome — tail logs across tabs into one dashboard.",
+    "longDesc": "LogTailer aggregates console.log/info/warn/error messages from all open tabs into a single, real-time dashboard. It uses a content script + background service worker (Manifest V3) and provides filtering, export to JSON, and tab-based views. Ideal for debugging across multiple pages and localhost servers. (Source README used.)",
+    "tags": ["chrome", "developer", "debugging"],
+    "screenshots": [
+      "/screenshots/logtailer-1.jpg",
+      "/screenshots/logtailer-2.jpg"
+    ],
+    "githubUrl": "https://github.com/EternalKnight002/logtailer.git",
+    "downloadUrl": "https://github.com/EternalKnight002/logtailer/releases/download/v1/logtailer.zip",
+    "poster": "/videos/logtailer-poster.jpg"
+  },
+
+  {
+    "title": "NotebookLM PDF Exporter",
+    "slug": "notebooklm-pdf-exporter",
+    "shortDesc": "Export NotebookLM notes into clean, formatted PDFs with smart pagination and citation cleanup.",
+    "longDesc": "NotebookLM PDF Exporter lets you download notes from Google's NotebookLM as a clean PDF. It preserves headings/tables, removes interactive citation markers, and uses smart pagination to avoid cut-off content. Lightweight, Manifest V3 extension requiring minimal permissions. (Source README used.)",
+    "tags": ["chrome", "productivity", "export"],
+    "screenshots": ["/screenshots/notebooklm-pdf-exporter-1.jpg"],
+    "githubUrl": "https://github.com/EternalKnight002/notebooklm-pdf-exporter.git",
+    "downloadUrl": "https://github.com/EternalKnight002/notebooklm-pdf-exporter/releases/download/v1/notebooklm-pdf-exporter.zip",
+    "poster": "/videos/notebooklm-pdf-exporter-poster.jpg"
+  },
+
+  {
+    "title": "Pomodoro Focus Timer",
+    "slug": "pomodoro-focus-timer",
+    "shortDesc": "Classic Pomodoro timer extension with customizable intervals, badge counter, and notifications.",
+    "longDesc": "A lightweight Pomodoro extension providing a classic 25/5 workflow with customizable durations, long-break support, desktop notifications, and a visual badge counter. Built as a Manifest V3 Chrome extension with persistent state and a dark theme UI. (Source README used.)",
+    "tags": ["chrome", "productivity", "timer"],
+    "screenshots": ["/screenshots/pomodoro-focus-timer-1.jpg"],
+    "githubUrl": "https://github.com/EternalKnight002/pomodoro-timer.git",
+    "downloadUrl": "https://github.com/EternalKnight002/pomodoro-timer/releases/download/v1/pomodoro-timer.zip",
+    "poster": "/videos/pomodoro-focus-timer-poster.jpg"
+  },
+
+  {
+    "title": "Quick QR Code Generator",
+    "slug": "quick-qr-generator",
+    "shortDesc": "Instantly generate a QR code for the current page URL or any text and download as PNG.",
+    "longDesc": "Quick QR Code Generator creates a QR code for the active tab URL or custom text. It includes a keyboard shortcut, real-time updates, and a download button for PNG export. Minimal permissions (activeTab) and a tiny codebase (qrcode.js). (Source README used.)",
+    "tags": ["chrome", "utility", "sharing"],
+    "screenshots": ["/screenshots/quick-qr-generator-1.jpg"],
+    "githubUrl": "https://github.com/EternalKnight002/qr-code-generator.git",
+    "downloadUrl": "https://github.com/EternalKnight002/qr-code-generator/releases/download/v1.1/qr-code-generator_v1.1.zip",
+    "poster": "/videos/quick-qr-generator-poster.jpg"
+  },
+
+  {
+    "title": "Terminal History (VS Code)",
+    "slug": "terminal-history",
+    "shortDesc": "VS Code extension that logs integrated terminal commands & outputs for quick copy/paste.",
+    "longDesc": "Terminal History captures every command and output from VS Code's integrated terminal and displays them in a sidebar. It offers quick-copy, status icons, and export options. This is a VSIX-style extension — the VSIX download is available in releases. (Source README used.)",
+    "tags": ["vscode", "developer", "productivity"],
+    "screenshots": ["/screenshots/terminal-history-1.jpg"],
+    "githubUrl": "https://github.com/EternalKnight002/terminalHistory.git",
+    "downloadUrl": "https://github.com/EternalKnight002/terminalHistory/releases/download/v2.0.0/terminalhistory-2.0.0.vsix",
+    "poster": "/videos/terminal-history-poster.jpg"
+  }
+]
