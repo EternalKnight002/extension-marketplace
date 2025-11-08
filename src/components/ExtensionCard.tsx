@@ -2,13 +2,12 @@
 "use client";
 
 import React from "react";
-import { FaGithub, FaReact } from "react-icons/fa";
+import { FaGithub, FaDownload } from "react-icons/fa";
 
 type Ext = {
   title: string;
   slug: string;
-  shortDesc: string;
-  tags?: string[];
+  shortDesc?: string;
   screenshots?: string[];
   githubUrl?: string;
   downloadUrl?: string;
@@ -18,9 +17,7 @@ export default function ExtensionCard({ ext }: { ext: Ext }) {
   const initial = ext.screenshots && ext.screenshots.length > 0 ? ext.screenshots[0] : "/screenshots/placeholder.jpg";
   const [bgSrc, setBgSrc] = React.useState(initial);
 
-  const onBgError = () => {
-    setBgSrc("/screenshots/placeholder.jpg");
-  };
+  const onBgError = () => setBgSrc("/screenshots/placeholder.jpg");
 
   return (
     <article className="extension-card" aria-labelledby={`ext-${ext.slug}-title`}>
@@ -29,6 +26,7 @@ export default function ExtensionCard({ ext }: { ext: Ext }) {
         alt={`${ext.title} screenshot`}
         className="extension-card__img"
         onError={onBgError}
+        draggable={false}
       />
 
       <div className="extension-card__overlay" />
@@ -39,37 +37,37 @@ export default function ExtensionCard({ ext }: { ext: Ext }) {
             {ext.title}
           </h3>
 
-          <p className="extension-card__desc">{ext.shortDesc}</p>
-
-          <div className="extension-card__tags" aria-hidden>
-            {ext.tags?.slice(0, 4).map((t) => (
-              <span key={t} className="tag">
-                {t}
-              </span>
-            ))}
-          </div>
+          {/* hidden by default, revealed on hover */}
+          <p
+            className="extension-card__desc"
+            aria-hidden={ext.shortDesc ? "false" : "true"}
+          >
+            {ext.shortDesc ?? ""}
+          </p>
         </div>
 
-        <div className="extension-card__actions">
+        <div className="extension-card__actions" aria-hidden="false">
           <a
             href={ext.downloadUrl || "#"}
             className="btn-icon"
-            title={`Download ${ext.title}`}
             aria-label={`Download ${ext.title}`}
+            title={`Download ${ext.title}`}
             rel="noopener noreferrer"
           >
-            <FaReact />
+            <FaDownload />
+            <span className="sr-only">Download {ext.title}</span>
           </a>
 
           <a
             href={ext.githubUrl || "#"}
+            className="btn-icon"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-icon"
-            title={`Open ${ext.title} on GitHub`}
             aria-label={`Open ${ext.title} on GitHub`}
+            title={`Open ${ext.title} on GitHub`}
           >
             <FaGithub />
+            <span className="sr-only">Open {ext.title} on GitHub</span>
           </a>
         </div>
       </div>
